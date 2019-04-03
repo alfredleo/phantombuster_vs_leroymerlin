@@ -93,7 +93,7 @@ nick.newTab().then(
                 //await tab.inject("../injectables/jquery-3.0.0.min.js") // We're going to use jQuery to scrape
                 await tab.untilVisible(".catalog__name") // Make sure we have loaded the right page
                 console.log(link);
-                const firstLink = await tab.evaluate((arg, callback) => {
+                const items = await tab.evaluate((arg, callback) => {
                     const data = []
                     $("p.catalog__name").each((index, element) => {
                         data.push({
@@ -104,8 +104,8 @@ nick.newTab().then(
                     callback(null, data)
                 })
 
-                for (link of firstLink) {
-                    await tab.open(baseUrl + link.url)
+                for (item of items) {
+                    await tab.open(baseUrl + item.url)
                     await tab.untilVisible("table.about__params__table")
 
                     // Evaluate a function in the current page DOM context. Execution is sandboxed: page has no access to the Nick context
